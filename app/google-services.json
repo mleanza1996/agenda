@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "248735187959",
+    "project_id": "agenda-fab24",
+    "storage_bucket": "agenda-fab24.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248735187959:android:eaf4f5e37a52d2739924f2",
+        "android_client_info": {
+          "package_name": "com.agenda"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtXyO3TUHhFhNUEozWEKMjwkkQ3CK2v3k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:248735187959:android:37a60aa64fe65c6e9924f2",
+        "android_client_info": {
+          "package_name": "com.agendapersonale"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBtXyO3TUHhFhNUEozWEKMjwkkQ3CK2v3k"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
