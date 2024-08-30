@@ -44,25 +44,21 @@ class MainActivity : AppCompatActivity() {
     // Metodo per reindirizzare alla schermata di login
     private fun redirectToLogin() {
         startActivity(Intent(this, LoginActivity::class.java))
-        finish() // Termina l'attività corrente in modo che l'utente non possa tornare indietro
+        finish()
     }
 
     // Metodo per impostare l'interfaccia utente
     private fun setupUI() {
         setContentView(R.layout.activity_main)
 
-        // Applica i padding delle barre di sistema alla vista principale
         applyWindowInsets(findViewById(R.id.main))
 
-        // Imposta il click listener per il pulsante per aggiungere una nuova nota
         findViewById<FloatingActionButton>(R.id.buttonAddNote).setOnClickListener {
             startActivity(Intent(this, AddNoteActivity::class.java))
         }
 
-        // Imposta il menu di navigazione inferiore
         setupMenu()
-
-        // Avvia il servizio di notifica in primo piano
+        
         startNotificationService()
     }
 

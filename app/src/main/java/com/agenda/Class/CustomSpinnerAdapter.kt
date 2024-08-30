@@ -22,14 +22,14 @@ class CustomSpinnerAdapter(
 ) : ArrayAdapter<String>(context, R.layout.spinner_item, options) {
 
     /**
-     * Restituisce la vista per l'elemento selezionato nello Spinner.
+     * Restituisce la view per l'elemento selezionato nello Spinner.
      */
     override fun getView(position: Int, convertView: View?, parent: ViewGroup): View {
         return getCustomView(position, convertView, parent)
     }
 
     /**
-     * Restituisce la vista per ogni elemento nel menu a discesa dello Spinner.
+     * Restituisce la view per ogni elemento nel menu a discesa dello Spinner.
      */
     override fun getDropDownView(position: Int, convertView: View?, parent: ViewGroup): View {
         return getCustomView(position, convertView, parent)

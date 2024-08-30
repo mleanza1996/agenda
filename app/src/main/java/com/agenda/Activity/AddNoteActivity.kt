@@ -22,7 +22,7 @@ import java.util.Date
 
 /**
  * Activity per aggiungere una nuova nota.
- * Permette di selezionare una data e ora, pulire le selezioni e aggiungere la nota a Firestore.
+ * Permette di selezionare una data e ora, pulire le nota/e e aggiungere la nota a Firestore.
  */
 class AddNoteActivity : AppCompatActivity() {
 
@@ -37,19 +37,17 @@ class AddNoteActivity : AppCompatActivity() {
     private lateinit var selectedDateTimeList: MutableList<NoteData>
     private var markerList: List<MarkerInfo>? = null
 
-    // Elementi di utilità
     private lateinit var preference: SharedPreferencesManager
 
     companion object {
         private const val REQUEST_CODE_MAPS_ACTIVITY = 1001
     }
 
-    // Contesto dell'attività
     private val context = this@AddNoteActivity
 
     /**
      * Metodo chiamato alla creazione dell'attività.
-     * Inizializza la vista e imposta i listener per i bottoni.
+     * Inizializza la View e imposta i listener per i bottoni.
      */
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +58,7 @@ class AddNoteActivity : AppCompatActivity() {
     }
 
     /**
-     * Inizializza gli elementi della vista.
+     * Inizializza gli elementi del View.
      */
     private fun initializeViews() {
         supportActionBar?.title = "Aggiungi nota"
@@ -93,11 +91,9 @@ class AddNoteActivity : AppCompatActivity() {
         }
     }
 
-    // Gestori per i click sui bottoni
-
     /**
      * Gestisce il clic sul pulsante per selezionare data e ora.
-     * Aggiunge le selezioni alla lista e aggiorna la vista.
+     * Aggiunge le note alla lista e aggiorna la View.
      */
     private fun clickDateTimePickerButton() {
         lifecycleScope.launch {
@@ -108,7 +104,7 @@ class AddNoteActivity : AppCompatActivity() {
             // Ottiene il numero di minuti per il promemoria
             val reminderMinutes = context.setNumber("Preavviso attivo")
 
-            // Aggiunge i dati alla lista e aggiorna la vista
+            // Aggiunge i dati alla lista e aggiorna la View
             selectedDateTimeList.add(NoteData(selectedStartDate, startTime, selectedEndDate, endTime, reminderMinutes))
             addDateTimeViews(selectedStartDate, startTime, selectedEndDate, endTime, reminderMinutes)
         }
@@ -158,16 +154,6 @@ class AddNoteActivity : AppCompatActivity() {
         }
 
         return endDate to endTime
-    }
-
-    /**
-     * Gestisce il clic sul pulsante per pulire la selezione di data e ora.
-     * Mostra una conferma prima di eliminare.
-     */
-    private fun clickDateTimeCleanButton() {
-        context.showConfirmationDialog("Elimina nota", "Sei sicuro di voler eliminare la nota?") {
-            clearSelectedDateTime()
-        }
     }
 
     /**

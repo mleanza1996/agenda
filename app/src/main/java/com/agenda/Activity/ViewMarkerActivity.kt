@@ -20,32 +20,33 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton
 
 class ViewMarkerActivity : AppCompatActivity(), OnMapReadyCallback {
 
-    private lateinit var mMap: GoogleMap
-    private lateinit var buttonAddMarker: FloatingActionButton
-    private lateinit var buttonConfirm: Button
+    private lateinit var mMap: GoogleMap // Istanza della mappa di Google
+    private lateinit var buttonAddMarker: FloatingActionButton // Pulsante per aggiungere marker (nascosto)
+    private lateinit var buttonConfirm: Button // Pulsante di conferma (nascosto)
 
     companion object {
-        private const val REQUEST_LOCATION_PERMISSION = 1
+        private const val REQUEST_LOCATION_PERMISSION = 1 // Codice richiesta permessi di localizzazione
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
 
-        hideButton()
-        initializeMaps()
+        hideButton()     // Nasconde i pulsanti che non sono necessari in questa activity
+        initializeMaps() // Inizializza la mappa
     }
 
-    private fun hideButton(){
+    private fun hideButton() {
+        // Nasconde i pulsanti per aggiungere e confermare i marker
         buttonAddMarker = findViewById(R.id.buttonAddMarker)
         buttonConfirm = findViewById(R.id.buttonConfirm)
 
         buttonAddMarker.visibility = View.GONE
         buttonConfirm.visibility = View.GONE
-
     }
 
-    private fun initializeMaps(){
+    private fun initializeMaps() {
+        // Inizializza la mappa usando SupportMapFragment
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
@@ -53,35 +54,37 @@ class ViewMarkerActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Check for location permissions
+        // Controlla i permessi di localizzazione
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // Request location permissions
+            // Richiede i permessi di localizzazione
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 REQUEST_LOCATION_PERMISSION
             )
         } else {
-            // Enable location-related functionalities
+            // Abilita le funzionalità di localizzazione se i permessi sono stati concessi
             mMap.isMyLocationEnabled = true
         }
 
-        // Retrieve marker data from the Intent
+        // Recupera le informazioni sui marker dall'Intent
         val markerInfosString = intent.getStringExtra("MARKER_INFOS")
         markerInfosString?.let {
+            // Converte la stringa delle coordinate in una lista di LatLng
             val markerInfos = it.split(";").map { coord ->
                 val (lat, lng) = coord.split(",").map { it.toDouble() }
                 LatLng(lat, lng)
             }
-            addMarkersToMap(markerInfos)
+            addMarkersToMap(markerInfos) // Aggiunge i marker alla mappa
         }
     }
 
     private fun addMarkersToMap(markerInfos: List<LatLng>) {
+        // Aggiunge i marker alla mappa e muove la fotocamera
         for (latLng in markerInfos) {
             mMap.addMarker(MarkerOptions().position(latLng).title("Marker"))
             mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
@@ -96,6 +99,7 @@ class ViewMarkerActivity : AppCompatActivity(), OnMapReadyCallback {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         if (requestCode == REQUEST_LOCATION_PERMISSION) {
             if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                // Se il permesso è concesso, abilita le funzionalità di localizzazione
                 if (ActivityCompat.checkSelfPermission(
                         this,
                         Manifest.permission.ACCESS_FINE_LOCATION
@@ -104,20 +108,15 @@ class ViewMarkerActivity : AppCompatActivity(), OnMapReadyCallback {
                         Manifest.permission.ACCESS_COARSE_LOCATION
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
-                    // TODO: Consider calling
-                    //    ActivityCompat#requestPermissions
-                    // here to request the missing permissions, and then overriding
-                    //   public void onRequestPermissionsResult(int requestCode, String[] permissions,
-                    //                                          int[] grantResults)
-                    // to handle the case where the user grants the permission. See the documentation
-                    // for ActivityCompat#requestPermissions for more details.
+                    // TODO: Gestire il caso in cui i permessi siano ancora mancanti
                     return
                 }
                 mMap.isMyLocationEnabled = true
             } else {
+                // Mostra un messaggio se il permesso è negato
                 Toast.makeText(
                     this,
-                    "Location permission denied. Unable to access location.",
+                    "Permesso di localizzazione negato. Impossibile accedere alla posizione.",
                     Toast.LENGTH_SHORT
                 ).show()
             }

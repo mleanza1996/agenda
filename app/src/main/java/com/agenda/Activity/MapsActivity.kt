@@ -27,48 +27,51 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     private lateinit var buttonAddMarker: FloatingActionButton
     private lateinit var buttonConfirm: Button
 
-    private var isAddingMarker = false // Flag for adding markers
-    private val markerLocations = mutableListOf<LatLng>() // List to store marker coordinates
+    private var isAddingMarker = false // Flag per gestire l'aggiunta di marker
+    private val markerLocations = mutableListOf<LatLng>() // Lista per memorizzare le coordinate dei marker
 
     companion object {
-        private const val REQUEST_LOCATION_PERMISSION = 1
+        private const val REQUEST_LOCATION_PERMISSION = 1 // Costante per la richiesta di permessi di localizzazione
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_maps)
 
-        initializePlacesClient()
-        initializeUIButton()
-        initializeMaps()
+        initializePlacesClient() // Inizializza Places API
+        initializeUIButton()     // Inizializza i pulsanti della UI
+        initializeMaps()         // Inizializza la mappa
     }
 
     private fun initializePlacesClient() {
+        // Configura Places API
         Places.initialize(applicationContext, getString(R.string.google_api_key))
         placesClient = Places.createClient(this)
     }
 
     private fun initializeUIButton() {
-        // Get references to UI elements
+        // Riferimenti agli elementi UI
         buttonAddMarker = findViewById(R.id.buttonAddMarker)
         buttonConfirm = findViewById(R.id.buttonConfirm)
 
+        // Listener per aggiungere/rimuovere modalità di aggiunta marker
         buttonAddMarker.setOnClickListener {
             isAddingMarker = !isAddingMarker
             if (isAddingMarker) {
-                buttonAddMarker.setImageResource(R.drawable.ic_marker_active) // Update icon if needed
-                Toast.makeText(this, "Click on the map to add a marker", Toast.LENGTH_SHORT).show()
+                buttonAddMarker.setImageResource(R.drawable.ic_marker_active) // Cambia icona
+                Toast.makeText(this, "Clicca sulla mappa per aggiungere un marker", Toast.LENGTH_SHORT).show()
             } else {
-                buttonAddMarker.setImageResource(R.drawable.ic_add_marker) // Reset icon
-                Toast.makeText(this, "Marker addition canceled", Toast.LENGTH_SHORT).show()
+                buttonAddMarker.setImageResource(R.drawable.ic_add_marker) // Reset icona
+                Toast.makeText(this, "Aggiunta marker annullata", Toast.LENGTH_SHORT).show()
             }
         }
 
+        // Listener per confermare l'aggiunta di marker
         buttonConfirm.setOnClickListener {
             if (markerLocations.isEmpty()) {
-                Toast.makeText(this, "No markers added.", Toast.LENGTH_SHORT).show()
+                Toast.makeText(this, "Nessun marker aggiunto.", Toast.LENGTH_SHORT).show()
             } else {
-
+                // Prepara le coordinate per il ritorno
                 val coordinates = markerLocations.joinToString(separator = ";") {
                     "${it.latitude},${it.longitude}"
                 }
@@ -84,7 +87,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     }
 
     private fun initializeMaps() {
-        // Initialize the map
+        // Inizializza la mappa con SupportMapFragment
         val mapFragment = supportFragmentManager.findFragmentById(R.id.map) as SupportMapFragment
         mapFragment.getMapAsync(this)
     }
@@ -92,43 +95,40 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
     override fun onMapReady(googleMap: GoogleMap) {
         mMap = googleMap
 
-        // Set up a click listener on the map
+        // Listener per il click sulla mappa per aggiungere un marker
         mMap.setOnMapClickListener { latLng ->
             if (isAddingMarker) {
-                // Add a marker at the clicked position
-                mMap.addMarker(MarkerOptions().position(latLng).title("New Marker"))
+                mMap.addMarker(MarkerOptions().position(latLng).title("Nuovo Marker"))
                 mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(latLng, 15f))
 
-                // Save the latitude and longitude to the list
-                markerLocations.add(latLng)
+                markerLocations.add(latLng) // Aggiungi le coordinate alla lista
 
-                // Notify the user
                 Toast.makeText(
                     this,
-                    "Marker added at: Lat=${latLng.latitude}, Lng=${latLng.longitude}",
+                    "Marker aggiunto a: Lat=${latLng.latitude}, Lng=${latLng.longitude}",
                     Toast.LENGTH_SHORT
                 ).show()
 
-                // Reset the flag
+                // Reset del flag e icona
                 isAddingMarker = false
-                buttonAddMarker.setImageResource(R.drawable.ic_add_marker) // Reset icon
+                buttonAddMarker.setImageResource(R.drawable.ic_add_marker)
             }
         }
 
-        // Check for location permissions
+        // Controlla i permessi di localizzazione
         if (ContextCompat.checkSelfPermission(
                 this,
                 Manifest.permission.ACCESS_FINE_LOCATION
             ) != PackageManager.PERMISSION_GRANTED
         ) {
-            // Request location permissions
+            // Richiede i permessi di localizzazione
             ActivityCompat.requestPermissions(
                 this,
                 arrayOf(Manifest.permission.ACCESS_FINE_LOCATION),
                 REQUEST_LOCATION_PERMISSION
             )
         } else {
-            // Enable location-related functionalities
+            // Abilita le funzionalità di localizzazione
             mMap.isMyLocationEnabled = true
         }
     }
@@ -142,7 +142,7 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
         when (requestCode) {
             REQUEST_LOCATION_PERMISSION -> {
                 if (grantResults.isNotEmpty() && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    // Permission granted
+                    // Permesso concesso, abilita le funzionalità di localizzazione
                     if (ContextCompat.checkSelfPermission(
                             this,
                             Manifest.permission.ACCESS_FINE_LOCATION
@@ -151,10 +151,10 @@ class MapsActivity : AppCompatActivity(), OnMapReadyCallback {
                         mMap.isMyLocationEnabled = true
                     }
                 } else {
-                    // Permission denied
+                    // Permesso negato, mostra un messaggio
                     Toast.makeText(
                         this,
-                        "Location permission denied. Unable to access location.",
+                        "Permesso di localizzazione negato. Impossibile accedere alla posizione.",
                         Toast.LENGTH_SHORT
                     ).show()
                 }

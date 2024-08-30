@@ -4,6 +4,7 @@ import com.google.firebase.Timestamp
 import java.time.LocalTime
 import java.util.Date
 
+// Classe dati per rappresentare la data di inizio, fine e avviso di una Nota
 data class NoteData(
     val startDate: Timestamp,
     val endDate: Timestamp,

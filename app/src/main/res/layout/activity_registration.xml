@@ -26,7 +26,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textRegNome"
                 android:hint="Nome"
-                android:text="Michael"
+                android:text=""
                 android:maxLines="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -42,7 +42,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textRegCognome"
                 android:hint="Cognome"
-                android:text="Leanza"
+                android:text=""
                 android:maxLines="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -65,7 +65,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textRegEmail"
                 android:hint="Email"
-                android:text="lmichael1996@gmail.com"
+                android:text=""
                 android:maxLines="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
@@ -81,7 +81,7 @@
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/textRegPassword"
                 android:hint="Password"
-                android:text="nkobjivhu"
+                android:text=""
                 android:maxLines="1"
                 android:inputType="textPassword"
                 android:layout_width="match_parent"
@@ -100,7 +100,7 @@
                 android:id="@+id/textRegConfPassword"
                 android:hint="Conferma password"
                 android:inputType="textPassword"
-                android:text="nkobjivhu"
+                android:text=""
                 android:maxLines="1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">

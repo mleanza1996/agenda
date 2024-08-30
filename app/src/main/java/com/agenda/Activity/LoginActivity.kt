@@ -14,6 +14,7 @@ import com.google.android.material.textfield.TextInputEditText
 
 class LoginActivity : AppCompatActivity() {
 
+    // Dichiarazione dei pulsanti per login e registrazione
     private lateinit var buttonLogin: Button
     private lateinit var buttonRegistration: Button
 
@@ -26,6 +27,7 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun applyWindowInsets() {
+        // Applica i margini di sistema (status bar, navigation bar) alla vista principale
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main)) { v, insets ->
             val systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars())
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom)
@@ -34,28 +36,34 @@ class LoginActivity : AppCompatActivity() {
     }
 
     private fun initializeViews() {
+        // Inizializza i pulsanti di login e registrazione
         buttonLogin = findViewById(R.id.buttonLogin)
         buttonRegistration = findViewById(R.id.buttonRegistration)
 
+        // Listener per il pulsante di login
         buttonLogin.setOnClickListener {
             val email = findViewById<TextInputEditText>(R.id.textEmail).text.toString()
             val password = findViewById<TextInputEditText>(R.id.textPassword).text.toString()
 
+            // Esegue il login con email e password
             UserActivity.login(email, password) { success, message ->
                 if (success) {
+                    // Avvia MainActivity se il login ha successo
                     val intent = Intent(this, MainActivity::class.java)
                     startActivity(intent)
                     Toast.makeText(this, "Login eseguito con successo", Toast.LENGTH_SHORT).show()
                 } else {
+                    // Mostra un messaggio di errore in caso di fallimento
                     message?.let { Toast.makeText(this, it, Toast.LENGTH_LONG).show() }
                 }
             }
         }
 
+        // Listener per il pulsante di registrazione
         buttonRegistration.setOnClickListener {
+            // Avvia RegistrationActivity
             val intent = Intent(this, RegistrationActivity::class.java)
             startActivity(intent)
         }
     }
-
 }
